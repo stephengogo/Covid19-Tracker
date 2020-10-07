@@ -3,15 +3,26 @@ import {MenuItem, FormControl, Select, Card, CardContent} from "@material-ui/cor
 import InfoBox from './InfoBox.js';
 import Map from "./Map.js";
 import './App.css';
+import Table from "./Table.js";
+import {sortData} from "./util";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo]  = useState({});
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+    .then(response => response.json())
+    .then(data => {
+      setCountryInfo(data);
+    });
+  }, []);
 
   useEffect(() => {
     const getCountriesData = async () => {
-      await fetch (" https://disease.sh/v3/covid-19/countries")
+      await fetch ("https://disease.sh/v3/covid-19/countries")
       .then((response) => response.json())
       .then((data) => {
         const countries = data.map((x) => (
@@ -19,6 +30,9 @@ function App() {
             name: x.country, // United States, United Kingdom 
             value: x.countryInfo.iso2 // UK, USA, FR
           }));
+
+          const sortedData = sortData(data);
+          setTableData(sortedData);
           setCountries(countries); // Same as countries.setCountries
       });
     };
@@ -64,11 +78,14 @@ function App() {
           <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
           <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
+
         <Map />
       </div>
+
       <Card className ="app_right">
         {/* {table and graph} */}
         <h3>Live Cases by Country</h3>
+        <Table countries={tableData}/>
         <h3>World Wide New Cases</h3>
 
         <CardContent></CardContent>

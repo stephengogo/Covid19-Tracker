@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {MenuItem, FormControl, Select} from "@material-ui/core";
-import InfoBox from './InfoBox';
-
+import {MenuItem, FormControl, Select, Card, CardContent} from "@material-ui/core";
+import InfoBox from './InfoBox.js';
+import Map from "./Map.js";
 import './App.css';
 
 function App() {
@@ -35,30 +35,32 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app_header">
-        <h1>Lets build a COVID 19 Tracker</h1>
-        <FormControl className="app_dropdown">
-          <Select variant="outlined" onChange={onCountryChange} value={country} >
-            <MenuItem value="worldwide">Worldwide</MenuItem>
-            {countries.map((country) => (
-                <MenuItem value={country.value}>{country.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <div className="app_left">
+        <div className="app_header">
+          <h1>Lets build a COVID 19 Tracker</h1>
+          <FormControl className="app_dropdown">
+            <Select variant="outlined" onChange={onCountryChange} value={country} >
+              <MenuItem value="worldwide">Worldwide</MenuItem>
+              {countries.map((country) => (
+                  <MenuItem value={country.value}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div className="app_stats">
+          <InfoBox title="Coronavirus cases" cases={123} total={2000} />
+          <InfoBox title="Recovered" cases={1234} total={3000} />
+          <InfoBox title="Deaths" cases={12345} total={4000} />
+        </div>
+        <Map />
       </div>
-      
-      <div className="app_stats">
-        <InfoBox title="Coronavirus cases" cases={123} total={2000} />
-        <InfoBox title="Recovered" cases={1234} total={3000} />
-        <InfoBox title="Deaths" cases={12345} total={4000} />
-      </div>
-      {/* {infoBoxes} */}
-      {/* {infoBoxes} */}
-      {/* {infoBoxes} */}
+      <Card className ="app_right">
+        {/* {table and graph} */}
+        <h3>Live Cases by Country</h3>
+        <h3>World Wide New Cases</h3>
 
-      {/* {Table} */}
-      {/* {Graph} */}
-      {/* {Map} */}
+        <CardContent></CardContent>
+      </Card>
     </div>
   );
 }

@@ -5,12 +5,15 @@ import Map from "./Map.js";
 import './App.css';
 import Table from "./Table.js";
 import {sortData} from "./util";
+import LineGraph from "./LineGraph";
+// import numeral from "numeral";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo]  = useState({});
   const [tableData, setTableData] = useState([]);
+  const [casesType, setCasesType] = useState("cases");
 
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
@@ -83,12 +86,13 @@ function App() {
       </div>
 
       <Card className ="app_right">
-        {/* {table and graph} */}
-        <h3>Live Cases by Country</h3>
-        <Table countries={tableData}/>
-        <h3>World Wide New Cases</h3>
-
-        <CardContent></CardContent>
+        <CardContent>
+          {/* {table and graph} */}
+          <h3>Live Cases by Country</h3>
+          <Table countries={tableData}/>
+          <h3>World Wide New Cases</h3>
+          <LineGraph casesType={casesType}/>
+        </CardContent>
       </Card>
     </div>
   );
